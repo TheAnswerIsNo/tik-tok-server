@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"tik-tok-server/app/handler/interact/comment"
+	"tik-tok-server/app/handler/video"
 	"tik-tok-server/app/middleware"
 	"tik-tok-server/global"
 )
@@ -22,11 +23,15 @@ func setupRouter() *gin.Engine {
 			commentRouter.GET("/list/", commentHandler.GetCommentList)
 			commentRouter.POST("/action/", commentHandler.CommentAction)
 		}
+		publishRouter := douyin.Group("/publish")
+		{
+			publishRouter.POST("/action", video.PublishVideoHandler)
+		}
 
 	}
 
 	//静态资源路由
-	routers.Static("public", "./")
+	routers.Static("/public", "./public")
 	return routers
 }
 

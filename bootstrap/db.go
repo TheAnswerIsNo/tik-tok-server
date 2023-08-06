@@ -16,6 +16,8 @@ import (
 	"time"
 )
 
+var Db *gorm.DB
+
 func InitalizeDB() *gorm.DB {
 
 	dbConfig := global.App.Config.Database
@@ -52,6 +54,7 @@ func InitalizeDB() *gorm.DB {
 		sqlDB.SetMaxIdleConns(dbConfig.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(dbConfig.MaxOpenConns)
 		initMySqlTables(db)
+		Db = db
 		return db
 	}
 

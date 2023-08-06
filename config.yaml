@@ -11,7 +11,7 @@ database:
   port: 3306 # 端口号
   database: tik-tok # 数据库名称
   username: root # 用户名
-  password: 123456 # 密码
+  password: root # 密码
   charset: utf8mb4 # 编码格式
   parse_time: true
   loc: Local
