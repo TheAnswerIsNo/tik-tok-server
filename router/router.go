@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"tik-tok-server/app/handler/interact/comment"
-	"tik-tok-server/app/middleware"
 	"tik-tok-server/global"
 )
 
@@ -16,17 +15,15 @@ func setupRouter() *gin.Engine {
 	douyin := routers.Group("/douyin")
 	{
 		//次级路由 根据各自模块命名
-		commentRouter := douyin.Group("/comment").Use(middleware.JWTAuth(middleware.AppGuardName))
+		commentRouter := douyin.Group("/comment")
 		{
-			commentHandler := new(comment.CommentHandler)
-			commentRouter.GET("/list/", commentHandler.GetCommentList)
-			commentRouter.POST("/action/", commentHandler.CommentAction)
+			commentRouter.GET("/list", comment.QueryCommentHandler)
+			commentRouter.POST("/action", comment.ActionCommentHandler)
 		}
-
 	}
 
 	//静态资源路由
-	routers.Static("public", "./")
+	routers.Static("/public", "./public")
 	return routers
 }
 

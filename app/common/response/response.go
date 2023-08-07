@@ -22,6 +22,15 @@ func Success(c *gin.Context, data interface{}) {
 	})
 }
 
+// SuccessNoData 响应成功
+func SuccessNoData(c *gin.Context, msg string) {
+	c.JSON(http.StatusOK, Response{
+		0,
+		msg,
+		nil,
+	})
+}
+
 // Fail 响应失败 ErrorCode 不为 0 表示失败
 func Fail(c *gin.Context, statusCode int, statusMsg string) {
 	c.JSON(http.StatusOK, Response{
