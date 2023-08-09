@@ -4,7 +4,7 @@ import "time"
 
 // ID 自增主键
 type ID struct {
-	ID uint `json:"id" gorm:"primaryKey"`
+	ID uint `json:"user_id" gorm:"primaryKey"`
 }
 
 // Timestamp 创建与更新时间
