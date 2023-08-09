@@ -1,8 +1,8 @@
 package video
 
 import (
-	"gorm.io/gorm/utils/tests"
 	"sync"
+	"tik-tok-server/app/models"
 	"tik-tok-server/bootstrap"
 	"time"
 )
@@ -11,14 +11,14 @@ type Video struct {
 	Id     int64 `json:"id,omitempty"`
 	UserId int64 `json:"-"`
 	//下面需要修改为真正的User
-	Author        *tests.User `json:"author,omitempty" gorm:"-"`
-	PlayUrl       string      `json:"play_url,omitempty"`
-	CoverUrl      string      `json:"cover_url,omitempty"`
-	FavoriteCount int64       `json:"favorite_count,omitempty"`
-	CommentCount  int64       `json:"comment_count,omitempty"`
-	IsFavorite    bool        `json:"is_favorite,omitempty"`
-	Title         string      `json:"title,omitempty"`
-	CreateTime    time.Time   `json:"-" gorm:"autoUpdateTime"`
+	Author        *models.User `json:"author,omitempty" gorm:"-"`
+	PlayUrl       string       `json:"play_url,omitempty"`
+	CoverUrl      string       `json:"cover_url,omitempty"`
+	FavoriteCount int64        `json:"favorite_count"`
+	CommentCount  int64        `json:"comment_count"`
+	IsFavorite    bool         `json:"is_favorite"`
+	Title         string       `json:"title"`
+	CreateTime    time.Time    `json:"-" gorm:"autoUpdateTime"`
 }
 
 func (Video) TabelName() string {
@@ -43,6 +43,24 @@ func NewVideoDao() *VideoDao {
 func (*VideoDao) InsertVideo(video *Video) error {
 	if err := bootstrap.Db.Create(&video); err != nil {
 		return err.Error
+	}
+	return nil
+}
+
+func (*VideoDao) QueryVideoList(videoList *[]*Video, userid int64) error {
+	err := bootstrap.Db.Where("user_id=?", userid).Find(videoList).Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+func (*VideoDao) QueryFeedVideoList(videoList *[]*Video, latestime time.Time, maxcount int) error {
+	err := bootstrap.Db.
+		Where("create_time<?", latestime).
+		Limit(maxcount).Order("create_time desc").
+		Find(videoList).Error
+	if err != nil {
+		return err
 	}
 	return nil
 }

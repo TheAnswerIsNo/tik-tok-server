@@ -14,11 +14,11 @@ import (
 func PublishVideoHandler(c *gin.Context) {
 	//获取参数
 	//token参数(登录注册完成后开放)
-	//token, err := c.Get("token")
+	_, exist := c.Get("token")
 
-	//if err != nil {
-	//	response.Fail(c, -1, "token不存在")
-	//}
+	if !exist {
+		response.Fail(c, -1, "token不存在")
+	}
 
 	//title
 	title := c.PostForm("title")
@@ -44,14 +44,14 @@ func PublishVideoHandler(c *gin.Context) {
 		}
 
 		//测试完成后开放
-		//userId, err := c.Get("id")
-		//if err != nil {
-		//	response.Fail(c, -1, "用户id获取失败")
-		//	return
-		//}
+		userId, exist := c.Get("id")
+		if !exist {
+			response.Fail(c, -1, "用户id获取失败")
+			return
+		}
 
 		//测试数据
-		userId := "1"
+		//userId := "1"
 		randNum := utils.RandString(6)
 		filename := fmt.Sprintf("%s_%s%s", userId, randNum, suffix)
 		videoFilePath := constants.FILEPREFIX + filename
@@ -68,7 +68,7 @@ func PublishVideoHandler(c *gin.Context) {
 			continue
 		}
 		//视频信息持久化
-		if err := video.PostVideo(userId, title, videoFilePath, imageFilePath); err == nil {
+		if err := video.PostVideo(userId.(string), title, videoFilePath, imageFilePath); err == nil {
 			ResponseOK(c, "视频上传成功")
 		}
 	}
