@@ -75,6 +75,6 @@ func PublishVideoHandler(c *gin.Context) {
 
 }
 func ResponseOK(c *gin.Context, msg string) {
-	c.JSON(http.StatusOK, gin.H{"StatusCode": 1,
+	c.JSON(http.StatusOK, gin.H{"StatusCode": 0,
 		"StatusMsg": msg})
 }
