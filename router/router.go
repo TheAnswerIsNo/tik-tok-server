@@ -39,6 +39,7 @@ func setupRouter() *gin.Engine {
 		authRouter := douyin.Group("auth").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
 			authRouter.POST("/info", app.Info)
+			authRouter.GET("/info", app.Info)
 		}
 
 	}
