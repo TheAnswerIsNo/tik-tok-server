@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	app "tik-tok-server/app/handler"
 	"tik-tok-server/app/handler/interact/comment"
+	"tik-tok-server/app/handler/video"
 	"tik-tok-server/app/middleware"
 	"tik-tok-server/global"
 )
@@ -23,6 +24,10 @@ func setupRouter() *gin.Engine {
 			commentRouter.GET("/list/", commentHandler.GetCommentList)
 			commentRouter.POST("/action/", commentHandler.CommentAction)
 		}
+		publishRouter := douyin.Group("/publish")
+		{
+			publishRouter.POST("/action", video.PublishVideoHandler)
+		}
 
 		//这个是一个负责登录注册的模块
 		registerRouter := douyin.Group("/user")
@@ -39,7 +44,7 @@ func setupRouter() *gin.Engine {
 	}
 
 	//静态资源路由
-	routers.Static("public", "./")
+	routers.Static("/public", "./public")
 	return routers
 }
 

@@ -11,10 +11,13 @@ import (
 	"io"
 	"log"
 	"os"
+	"tik-tok-server/app/models"
 	"tik-tok-server/app/models/comment"
 	"tik-tok-server/global"
 	"time"
 )
+
+var Db *gorm.DB
 
 func InitalizeDB() *gorm.DB {
 
@@ -52,6 +55,8 @@ func InitalizeDB() *gorm.DB {
 		sqlDB.SetMaxIdleConns(dbConfig.MaxIdleConns)
 		sqlDB.SetMaxOpenConns(dbConfig.MaxOpenConns)
 		initMySqlTables(db)
+		Db = db
+		global.App.DB = db
 		return db
 	}
 
@@ -106,6 +111,7 @@ func getGormLogger() logger.Interface {
 func initMySqlTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		comment.Comment{},
+		models.User{},
 	)
 	if err != nil {
 		global.App.Log.Error("migrate table failed,err:", zap.Any("err", err))
