@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	app "tik-tok-server/app/handler"
 	"tik-tok-server/app/handler/interact/comment"
+	"tik-tok-server/app/handler/relation"
 	"tik-tok-server/app/handler/video"
 	"tik-tok-server/app/middleware"
 	"tik-tok-server/global"
