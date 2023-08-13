@@ -5,7 +5,6 @@ import (
 	"github.com/gin-gonic/gin"
 	app "tik-tok-server/app/handler"
 	"tik-tok-server/app/handler/interact/comment"
-	"tik-tok-server/app/handler/relation"
 	"tik-tok-server/app/handler/video"
 	"tik-tok-server/app/middleware"
 	"tik-tok-server/global"
@@ -33,13 +32,14 @@ func setupRouter() *gin.Engine {
 		//这个是一个负责登录注册的模块
 		registerRouter := douyin.Group("/user")
 		{
-			registerRouter.POST("/register/", app.Register)
-			registerRouter.POST("/Login/", app.Login)
+			registerRouter.POST("/register", app.Register)
+			registerRouter.POST("/Login", app.Login)
 		}
 		//这个是用户信息
 		authRouter := douyin.Group("/auth").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
-			authRouter.POST("/info/", app.Info)
+			authRouter.POST("/info", app.Info)
+			authRouter.GET("/info", app.Info)
 		}
 
 		// 关注
