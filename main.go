@@ -32,5 +32,4 @@ func main() {
 	}()
 
 	router.RunServer()
-
 }
