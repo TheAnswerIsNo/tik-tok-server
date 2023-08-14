@@ -10,7 +10,7 @@ type Configuration struct {
 
 type App struct {
 	Env  string `mapstructure:"dev" json:"env" yaml:"env"`
-	Port int    `mapstructure:"9000" json:"port" yaml:"port"`
+	Port int    `mapstructure:"8080" json:"port" yaml:"port"`
 	Name string `mapstructure:"douyin" json:"name" yaml:"name"`
 	Url  string `mapstructure:"http://127.0.0.1" json:"url" yaml:"url"`
 }

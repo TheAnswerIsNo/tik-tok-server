@@ -1,8 +1,8 @@
 package config
 
 type DB struct {
-	Host                string `mapstructure:"172.16.32.69" json:"host" yaml:"host"`
-	Port                int    `mapstructure:"52832" json:"port" yaml:"port"`
+	Host                string `mapstructure:"172.16.32.4" json:"host" yaml:"host"`
+	Port                int    `mapstructure:"49596" json:"port" yaml:"port"`
 	Database            string `mapstructure:"tik_tok" json:"database" yaml:"database"`
 	UserName            string `mapstructure:"root" json:"username" yaml:"username"`
 	Password            string `mapstructure:"ddfpEHsK" json:"password" yaml:"password"`
