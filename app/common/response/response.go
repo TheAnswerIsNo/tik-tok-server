@@ -54,3 +54,8 @@ func BusinessFail(c *gin.Context, msg string) {
 func TokenFail(c *gin.Context) {
 	FailByError(c, global.Errors.TokenError)
 }
+
+// ValidateFail 请求参数验证失败
+func ValidateFail(c *gin.Context, msg string) {
+	Fail(c, global.Errors.ValidateError.ErrorCode, msg)
+}
