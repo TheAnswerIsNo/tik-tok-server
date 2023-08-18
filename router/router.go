@@ -18,12 +18,12 @@ func setupRouter() *gin.Engine {
 	douyin := routers.Group("/douyin")
 	{
 		//次级路由 根据各自模块命名
-		commentRouter := douyin.Group("/comment")
+		commentRouter := douyin.Group("/comment").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
 			commentRouter.GET("/list", comment.QueryCommentHandler)
 			commentRouter.POST("/action", comment.ActionCommentHandler)
 		}
-		publishRouter := douyin.Group("/publish")
+		publishRouter := douyin.Group("/publish").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
 			publishRouter.POST("/action", video.PublishVideoHandler)
 		}
