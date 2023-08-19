@@ -42,6 +42,11 @@ func (fc *FollowActionFlow) Do() error {
 	return nil
 }
 
+// 对外调用
+func PostFollowAction(userId, followedId int64, actionType int) error {
+	return NewFollowActionFlow(userId, followedId, actionType).Do()
+}
+
 // 检查
 func (fc *FollowActionFlow) check() error {
 	//	关注用户已注销
