@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"tik-tok-server/app/common/response"
+	"tik-tok-server/app/service/relation"
 	//"tik-tok-server/app/service/relation"
 )
 
@@ -26,13 +27,22 @@ func FollowActionHandler(context *gin.Context) {
 	NewProxyUser(context).Do()
 }
 
-// 实际准备
+// 执行业务
 func (pUser *ProxyUser) Do() {
 	if err := pUser.prepareNum(); err != nil {
 		response.ValidateFail(pUser.Context, err.Error())
 		return
 	}
-
+	if err := pUser.startAction(); err != nil {
+		if errors.Is(err, relation.ErrInvalidAct) || errors.Is(err, relation.ErrInavlidUser) {
+			response.ValidateFail(pUser.Context, err.Error())
+		} else {
+			response.ValidateFail(pUser.Context, "请勿重复关注")
+		}
+		return
+	}
+	// data应该返回什么？
+	response.Success(pUser.Context, "操作成功")
 }
 
 // 解析参数
@@ -61,10 +71,10 @@ func (pUser *ProxyUser) prepareNum() error {
 	return nil
 }
 
-//func (pUser *ProxyUser)startAction() error {
-//	//err := relation.PostFollowAction(pUser.userId, pUser.followId, pUser.antionType)
-//	//if err != nil {
-//	//	return err
-//	//}
-//	//return nil
-//}
+func (pUser *ProxyUser) startAction() error {
+	err := relation.PostFollowAction(pUser.userId, pUser.followId, pUser.antionType)
+	if err != nil {
+		return err
+	}
+	return nil
+}
