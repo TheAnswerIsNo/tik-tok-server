@@ -46,7 +46,7 @@ func setupRouter() *gin.Engine {
 		// 关注
 		followRouter := douyin.Group("/relation").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
-			followRouter.POST("/action", relation.FollowActionHandler)
+			followRouter.POST("/action/", relation.FollowActionHandler)
 		}
 	}
 
