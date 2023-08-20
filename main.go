@@ -2,6 +2,7 @@ package main
 
 import (
 	"tik-tok-server/bootstrap"
+	"tik-tok-server/global"
 	"tik-tok-server/router"
 )
 
@@ -11,21 +12,21 @@ func main() {
 	bootstrap.InitializeConfig()
 
 	//初始化日志
-	log := bootstrap.InitializeLog()
-	log.Info("log init success!")
+	global.App.Log = bootstrap.InitializeLog()
+	global.App.Log.Info("log init success!")
 
 	//初始化redis
-	bootstrap.InitializeRedis()
-	log.Info("redis init success!")
+	global.App.Redis = bootstrap.InitializeRedis()
+	global.App.Log.Info("redis init success!")
 
 	//初始化数据库
-	DB := bootstrap.InitalizeDB()
-	log.Info("mysql init success!")
+	global.App.DB = bootstrap.InitalizeDB()
+	global.App.Log.Info("mysql init success!")
 
 	//关闭数据库连接
 	defer func() {
-		if DB != nil {
-			db, _ := DB.DB()
+		if global.App.DB != nil {
+			db, _ := global.App.DB.DB()
 			db.Close()
 		}
 	}()
