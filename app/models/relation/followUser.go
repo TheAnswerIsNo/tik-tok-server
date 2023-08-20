@@ -6,7 +6,7 @@ import (
 	"sync"
 	"tik-tok-server/app/models/comment"
 	"tik-tok-server/app/models/video"
-	"tik-tok-server/bootstrap"
+	"tik-tok-server/global"
 )
 
 // 创建user结构体
@@ -50,7 +50,7 @@ func NewUserDao() *UserDao {
 // 通过Id查找用户是否存在
 func (*UserDao) IsExistById(id int64) bool {
 	var userInfo UserInfo
-	db := bootstrap.InitalizeDB()
+	db := global.App.DB
 	if err := db.Where("user_id = ?", id).Select("id").First(&userInfo).Error; err != nil {
 		log.Println(err)
 	}
@@ -63,7 +63,7 @@ func (*UserDao) IsExistById(id int64) bool {
 // 用户关注
 // userId: 当前用户id，followedId:被关注的对象的id
 func (user *UserDao) AddUserFollow(userId, followedId int64) error {
-	return bootstrap.Db.Transaction(func(tx *gorm.DB) error {
+	return global.App.DB.Transaction(func(tx *gorm.DB) error {
 		// 更新当前用户的关注数
 		if err := tx.Exec("UPDATE user_info SET follow_count = follow_count + 1 WHERE id = ?", userId).Error; err != nil {
 			return err
@@ -82,7 +82,7 @@ func (user *UserDao) AddUserFollow(userId, followedId int64) error {
 
 // 取消关注
 func (user *UserDao) CancelUserFollow(userId, followedId int64) error {
-	return bootstrap.Db.Transaction(func(tx *gorm.DB) error {
+	return global.App.DB.Transaction(func(tx *gorm.DB) error {
 		// 更新当前用户的关注数
 		if err := tx.Exec("UPDATE user_info SET follow_count = follow_count - 1 WHERE id = ?", userId).Error; err != nil {
 			return err
