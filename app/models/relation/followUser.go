@@ -4,6 +4,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"sync"
+	"tik-tok-server/app/models"
 	"tik-tok-server/app/models/comment"
 	"tik-tok-server/app/models/video"
 	"tik-tok-server/global"
@@ -11,17 +12,15 @@ import (
 
 // 创建user结构体
 type UserInfo struct {
-	UserId         int32              `json:"user_id,omitempty"`
+	UserId         int32              `json:"user_id,omitempty" gorm:"primaryKey"`
 	Name           string             `json:"name,omitempty"`
-	sex            bool               `json:"sex,omitempty"`
-	getLike        int64              `json:"get_like,omitempty"`
-	Friends        int64              `json:"friends,omitempty"`
-	FollowCount    int64              `json:"follow_count"`   // 关注数
-	FollowerCount  int64              `json:"follower_count"` // 粉丝数
-	UserRelation   []*UserInfo        `json:"user_relation"`
-	Followed       []*UserInfo        `json:"followed,omitempty"`
+	FollowCount    int64              `json:"follow_count" gorm:"column:follow_count"`
+	FollowerCount  int64              `json:"follower_count" gorm:"column:follower_count"`
+	IsFollow       bool               `json:"is_follow" gorm:"column:is_follow"`
+	User           *models.User       `json:"user"`
+	Follows        []*UserInfo        `json:"follows,omitempty" gorm:"many2many:user_relation;joinForeignKey:user_id;joinReferences:user_id"`
 	Videos         []*video.Video     `json:"videos,omitempty"`
-	FavoriteVideos []*video.Video     `json:"favorite_videos,omitempty"`
+	FavoriteVideos []*video.Video     `json:"favorite_videos,omitempty" gorm:"many2many:user_favor_videos;"`
 	Comments       []*comment.Comment `json:"comments,omitempty"`
 }
 
