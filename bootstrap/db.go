@@ -13,6 +13,7 @@ import (
 	"os"
 	"tik-tok-server/app/models"
 	"tik-tok-server/app/models/comment"
+	"tik-tok-server/app/models/relation"
 	"tik-tok-server/global"
 	"time"
 )
@@ -48,7 +49,7 @@ func InitalizeDB() *gorm.DB {
 			SingularTable: true, //解决表名映射
 		},
 	}); err != nil {
-		global.App.Log.Error("mysql connect failed,err:", zap.Any("err", err))
+		//global.App.Log.Error("mysql connect failed,err:", zap.Any("err", err))
 		return nil
 	} else {
 		sqlDB, _ := db.DB()
@@ -112,6 +113,7 @@ func initMySqlTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		comment.Comment{},
 		models.User{},
+		relation.UserInfo{},
 	)
 	if err != nil {
 		global.App.Log.Error("migrate table failed,err:", zap.Any("err", err))

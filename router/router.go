@@ -21,11 +21,10 @@ func setupRouter() *gin.Engine {
 		//次级路由 根据各自模块命名
 		commentRouter := douyin.Group("/comment").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
-			commentHandler := new(comment.CommentHandler)
-			commentRouter.GET("/list/", commentHandler.GetCommentList)
-			commentRouter.POST("/action/", commentHandler.CommentAction)
+			commentRouter.GET("/list", comment.QueryCommentHandler)
+			commentRouter.POST("/action", comment.ActionCommentHandler)
 		}
-		publishRouter := douyin.Group("/publish")
+		publishRouter := douyin.Group("/publish").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
 			publishRouter.POST("/action", video.PublishVideoHandler)
 		}
@@ -37,7 +36,7 @@ func setupRouter() *gin.Engine {
 			registerRouter.POST("/Login", app.Login)
 		}
 		//这个是用户信息
-		authRouter := douyin.Group("auth").Use(middleware.JWTAuth(middleware.AppGuardName))
+		authRouter := douyin.Group("/auth").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
 			authRouter.POST("/info", app.Info)
 			authRouter.GET("/info", app.Info)
@@ -49,6 +48,11 @@ func setupRouter() *gin.Engine {
 			followRouter.GET("/follower", relation.QueryFollowerHandler)
 		}
 
+		// 关注
+		followRouter := douyin.Group("/relation").Use(middleware.JWTAuth(middleware.AppGuardName))
+		{
+			followRouter.POST("/action/", relation.FollowActionHandler)
+		}
 	}
 
 	//静态资源路由
