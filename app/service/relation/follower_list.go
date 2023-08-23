@@ -1,13 +1,13 @@
 package relation
 
 import (
-	//"github.com/ACking-you/byte_douyin_project/cache" //更新关注状态的包
-	"tik-tok-server/app/models/userinfo"
+	"tik-tok-server/app/cache"
+	"tik-tok-server/app/models/relation"
 )
 
 // FollowerList 包含用户关注者列表的结构
 type FollowerList struct {
-	UserList []*userinfo.UserInfo `json:"user_list"`
+	UserList []*relation.UserInfo `json:"user_list"`
 }
 
 // QueryFollowerList 查询用户关注者列表
@@ -19,7 +19,7 @@ func QueryFollowerList(userId int64) (*FollowerList, error) {
 type QueryFollowerListFlow struct {
 	userId int64
 
-	userList []*userinfo.UserInfo
+	userList []*relation.UserInfo
 
 	*FollowerList
 }
@@ -47,7 +47,7 @@ func (q *QueryFollowerListFlow) Do() (*FollowerList, error) {
 // checkNum 检查用户是否存在
 func (q *QueryFollowerListFlow) checkNum() error {
 	// 使用数据访问对象检查用户是否存在
-	if !userinfo.NewUserInfoDAO().IsUserExistById(q.userId) {
+	if !relation.NewUserDao().IsUserExistById(q.userId) {
 		return ErrUserNotExist
 	}
 	return nil
@@ -56,16 +56,16 @@ func (q *QueryFollowerListFlow) checkNum() error {
 // prepareData 准备关注者列表数据
 func (q *QueryFollowerListFlow) prepareData() error {
 	// 从数据访问对象获取用户的关注者列表
-	err := userinfo.NewUserInfoDAO().GetFollowerListByUserId(q.userId, &q.userList)
+	err := relation.NewUserDao().GetFollowerListByUserId(q.userId, &q.userList)
 	if err != nil {
 		return err
 	}
 
-	//!!!下面要修改为真正的获取关注状态的函数！！！
+
 	//填充每个用户的关注状态
-	// for _, v := range q.userList {
-	// 	v.IsFollow = cache.NewProxyIndexMap().GetUserRelation(q.userId, v.Id)//更新关注状态
-	// }
+	for _, v := range q.userList {
+		v.IsFollow = cache.NewProxyIndexMap().GetUserRelation(q.userId, v.UserId) //更新关注状态
+	}
 	return nil
 }
 

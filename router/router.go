@@ -41,11 +41,16 @@ func setupRouter() *gin.Engine {
 			authRouter.POST("/info", app.Info)
 			authRouter.GET("/info", app.Info)
 		}
-		//这个是用户关注列表和粉丝列表
-		followRouter := douyin.Group("/relation")
+		//用户关注列表
+		followListRouter := douyin.Group("/relation")
 		{
-			followRouter.GET("/follow", relation.QueryFollowListHandler)
-			followRouter.GET("/follower", relation.QueryFollowerHandler)
+			followListRouter.GET("/follow", relation.QueryFollowListHandler)
+		}
+
+		//用户粉丝列表
+		followerListRouter := douyin.Group("/relation")
+		{
+			followerListRouter.GET("/follower", relation.QueryFollowerHandler)
 		}
 
 		// 关注

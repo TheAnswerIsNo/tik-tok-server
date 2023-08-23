@@ -2,7 +2,7 @@ package relation
 
 import (
 	"errors"
-	"tik-tok-server/app/models/userinfo"
+	"tik-tok-server/app/models/relation"
 )
 
 var (
@@ -11,7 +11,7 @@ var (
 
 // FollowList 表示关注列表结构
 type FollowList struct {
-	UserList []*userinfo.UserInfo `json:"user_list"`
+	UserList []*relation.UserInfo `json:"user_list"`
 }
 
 // QueryFollowList 查询用户的关注列表
@@ -23,7 +23,7 @@ func QueryFollowList(userId int64) (*FollowList, error) {
 type QueryFollowListFlow struct {
 	userId int64
 
-	userList []*userinfo.UserInfo
+	userList []*relation.UserInfo
 
 	*FollowList
 }
@@ -51,7 +51,7 @@ func (q *QueryFollowListFlow) Do() (*FollowList, error) {
 
 // checkNum 检查用户是否存在
 func (q *QueryFollowListFlow) checkNum() error {
-	if !userinfo.NewUserInfoDAO().IsUserExistById(q.userId) {
+	if !relation.NewUserDao().IsUserExistById(q.userId) {
 		return ErrUserNotExist
 	}
 	return nil
@@ -59,8 +59,8 @@ func (q *QueryFollowListFlow) checkNum() error {
 
 // prepareData 准备关注列表数据
 func (q *QueryFollowListFlow) prepareData() error {
-	var userList []*userinfo.UserInfo
-	err := userinfo.NewUserInfoDAO().GetFollowListByUserId(q.userId, &userList)
+	var userList []*relation.UserInfo
+	err := relation.NewUserDao().GetFollowListByUserId(q.userId, &userList)
 	if err != nil {
 		return err
 	}
