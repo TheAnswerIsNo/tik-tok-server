@@ -17,3 +17,9 @@ type Timestamp struct {
 type PseudoDeletion struct {
 	DeleteTime time.Time `json:"delete_time" column:"delete_time"`
 }
+
+// CommonResponse 通用响应结构
+type CommonResponse struct {
+	StatusCode int32  `json:"status_code"`          // 响应状态码
+	StatusMsg  string `json:"status_msg,omitempty"` // 响应状态消息（可选）
+}

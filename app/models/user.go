@@ -2,6 +2,7 @@ package models
 
 import "strconv"
 
+// User结构体表示用户信息
 type User struct {
 	ID
 	UserName string `json:"username" gorm:"not null;index;comment:用户名称"`

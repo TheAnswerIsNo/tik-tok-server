@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	app "tik-tok-server/app/handler"
 	"tik-tok-server/app/handler/interact/comment"
+	"tik-tok-server/app/handler/relation"
 	"tik-tok-server/app/handler/video"
 	"tik-tok-server/app/middleware"
 	"tik-tok-server/global"
@@ -40,6 +41,12 @@ func setupRouter() *gin.Engine {
 		{
 			authRouter.POST("/info", app.Info)
 			authRouter.GET("/info", app.Info)
+		}
+		//这个是用户关注列表和粉丝列表
+		followRouter := douyin.Group("/relation")
+		{
+			followRouter.GET("/follow", relation.QueryFollowListHandler)
+			followRouter.GET("/follower", relation.QueryFollowerHandler)
 		}
 
 	}
