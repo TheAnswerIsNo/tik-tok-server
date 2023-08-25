@@ -11,9 +11,9 @@ import (
 	"io"
 	"log"
 	"os"
-	"tik-tok-server/app/models"
 	"tik-tok-server/app/models/comment"
 	"tik-tok-server/app/models/relation"
+	"tik-tok-server/app/models/user"
 	"tik-tok-server/global"
 	"time"
 )
@@ -112,7 +112,7 @@ func getGormLogger() logger.Interface {
 func initMySqlTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		comment.Comment{},
-		models.User{},
+		user.User{},
 		relation.UserInfo{},
 	)
 	if err != nil {

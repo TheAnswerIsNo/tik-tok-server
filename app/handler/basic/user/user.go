@@ -1,10 +1,10 @@
-package handler
+package user
 
 import (
 	"github.com/gin-gonic/gin"
 	"tik-tok-server/app/common/request"
 	"tik-tok-server/app/common/response"
-	"tik-tok-server/app/service"
+	"tik-tok-server/app/service/basic/user"
 )
 
 // Register 用户注册
@@ -15,7 +15,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	if err, user := service.UserService.Register(form); err != nil {
+	if err, user := user.UserService.Register(form); err != nil {
 		response.BusinessFail(c, err.Error())
 	} else {
 		response.Success(c, user)

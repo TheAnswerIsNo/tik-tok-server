@@ -5,6 +5,7 @@ import (
 	"tik-tok-server/app/common/request"
 	"tik-tok-server/app/common/response"
 	"tik-tok-server/app/service"
+	"tik-tok-server/app/service/basic/user"
 )
 
 // Login 进行入参校验，并调用UserService和jwtService服务颁发token
@@ -15,7 +16,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if err, user := service.UserService.Login(form); err != nil {
+	if err, user := user.UserService.Login(form); err != nil {
 		response.BusinessFail(c, err.Error())
 	} else {
 		tokenData, err, _ := service.JwtService.CreateToken(service.AppGuardName, user)
@@ -29,7 +30,7 @@ func Login(c *gin.Context) {
 
 // Info 通过 JWTAuth 中间件校验 Token 识别的用户 ID 来获取用户信息
 func Info(c *gin.Context) {
-	err, user := service.UserService.GetUserInfo(c.Keys["id"].(string))
+	err, user := user.UserService.GetUserInfo(c.Keys["id"].(string))
 	if err != nil {
 		response.BusinessFail(c, err.Error())
 		return

@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"tik-tok-server/app/common/constants"
 	"tik-tok-server/app/common/response"
-	"tik-tok-server/app/service/video"
+	"tik-tok-server/app/service/basic/video"
 	"tik-tok-server/utils"
 )
 
