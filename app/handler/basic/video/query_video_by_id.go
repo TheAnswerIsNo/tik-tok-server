@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"tik-tok-server/app/common/response"
 	"tik-tok-server/app/models/video"
-	video2 "tik-tok-server/app/service/video"
+	video2 "tik-tok-server/app/service/basic/video"
 )
 
 type ResultVideo struct {

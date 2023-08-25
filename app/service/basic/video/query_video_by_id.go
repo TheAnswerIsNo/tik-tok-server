@@ -4,7 +4,7 @@ import (
 	"errors"
 	"strconv"
 	video2 "tik-tok-server/app/models/video"
-	"tik-tok-server/app/service"
+	"tik-tok-server/app/service/basic/user"
 )
 
 type QueryVideoFlow struct {
@@ -54,7 +54,7 @@ func (q *QueryVideoFlow) packData() error {
 	err := video2.NewVideoDao().QueryVideoList(&q.videoList, q.userId)
 
 	//本来这里需要用userid查询这个作者信息，没有拉取代码,这里后面还需要将作者的信息填充进去
-	err, author := service.UserService.GetUserInfo(strconv.FormatInt(q.userId, 10))
+	err, author := user.UserService.GetUserInfo(strconv.FormatInt(q.userId, 10))
 	if err != nil {
 		return err
 	}

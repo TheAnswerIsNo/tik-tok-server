@@ -4,8 +4,8 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"sync"
-	"tik-tok-server/app/models"
 	"tik-tok-server/app/models/comment"
+	"tik-tok-server/app/models/user"
 	"tik-tok-server/app/models/video"
 	"tik-tok-server/global"
 )
@@ -17,7 +17,7 @@ type UserInfo struct {
 	FollowCount    int64              `json:"follow_count" gorm:"column:follow_count"`
 	FollowerCount  int64              `json:"follower_count" gorm:"column:follower_count"`
 	IsFollow       bool               `json:"is_follow" gorm:"column:is_follow"`
-	User           *models.User       `json:"user"`
+	User           *user.User         `json:"user"`
 	Follows        []*UserInfo        `json:"follows,omitempty" gorm:"many2many:user_relation;joinForeignKey:user_id;joinReferences:user_id"`
 	Videos         []*video.Video     `json:"videos,omitempty"`
 	FavoriteVideos []*video.Video     `json:"favorite_videos,omitempty" gorm:"many2many:user_favor_videos;"`

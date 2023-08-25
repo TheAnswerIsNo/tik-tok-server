@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"tik-tok-server/app/common/response"
-	"tik-tok-server/app/service/relation"
+	"tik-tok-server/app/service/contact/relation"
 	//"tik-tok-server/app/service/relation"
 )
 
