@@ -7,11 +7,11 @@ app:
 
 # 数据库参数
 database:
-  host: 172.16.32.4 # 域名
-  port: 49596 # 端口号
+  host: 127.0.0.1 # 域名
+  port: 3306 # 端口号
   database: tik-tok # 数据库名称
   username: root # 用户名
-  password: ddfpEHsK # 密码
+  password: root # 密码
   charset: utf8mb4 # 编码格式
   parse_time: true
   loc: Local

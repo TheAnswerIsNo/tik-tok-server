@@ -19,6 +19,7 @@ func setupRouter() *gin.Engine {
 	// 顶层路由/douyin
 	douyin := routers.Group("/douyin")
 	{
+		douyin.GET("/feed", video.FeedVideo)
 		//次级路由 根据各自模块命名
 		commentRouter := douyin.Group("/comment").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{

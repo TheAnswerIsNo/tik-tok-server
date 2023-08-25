@@ -3,7 +3,7 @@ package video
 import (
 	"strconv"
 	"tik-tok-server/app/models/video"
-	"tik-tok-server/app/service"
+	"tik-tok-server/app/service/basic/user"
 	"time"
 )
 
@@ -62,7 +62,7 @@ func (f *FeedVideoResponseFlow) prepareData() error {
 	}
 	//填充作者信息
 	for k, _ := range f.videolist {
-		err, author := service.UserService.GetUserInfo(strconv.FormatInt(f.videolist[k].UserId, 10))
+		err, author := user.UserService.GetUserInfo(strconv.FormatInt(f.videolist[k].UserId, 10))
 		if err != nil {
 			return err
 		}

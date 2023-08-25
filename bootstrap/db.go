@@ -14,6 +14,7 @@ import (
 	"tik-tok-server/app/models/comment"
 	"tik-tok-server/app/models/relation"
 	"tik-tok-server/app/models/user"
+	"tik-tok-server/app/models/video"
 	"tik-tok-server/global"
 	"time"
 )
@@ -113,6 +114,7 @@ func initMySqlTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		comment.Comment{},
 		user.User{},
+		video.Video{},
 		relation.UserInfo{},
 	)
 	if err != nil {
