@@ -5,9 +5,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"tik-tok-server/app/common/constants"
 	"tik-tok-server/app/common/response"
 	"tik-tok-server/app/service/basic/video"
+	"tik-tok-server/bootstrap"
 	"tik-tok-server/utils"
 )
 
@@ -67,8 +69,19 @@ func PublishVideoHandler(c *gin.Context) {
 			response.Fail(c, -1, "图片保存失败")
 			continue
 		}
+		//获取地址
+		v := bootstrap.InitializeConfig()
+
+		var url = v.GetString("app.url")
+		var port = strconv.Itoa(v.GetInt("app.port"))
+		var ABSFILEPREFIX = url + ":" + port + "/public/"
+		var ABSIMAGEPREFIX = url + ":" + port + "/public/"
+		//将路径转换为绝对路径
+		absvideoFilePath := ABSFILEPREFIX + filename
+		absimageFilePath := ABSIMAGEPREFIX + imageFile
+
 		//视频信息持久化
-		if err := video.PostVideo(userId.(string), title, videoFilePath, imageFilePath); err == nil {
+		if err := video.PostVideo(userId.(string), title, absvideoFilePath, absimageFilePath); err == nil {
 			ResponseOK(c, "视频上传成功")
 		}
 	}

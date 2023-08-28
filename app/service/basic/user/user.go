@@ -28,7 +28,7 @@ func (userService *userService) Register(params request.Register) (err error, ne
 
 // Login 登录
 func (userService *userService) Login(params request.Login) (err error, user *user.User) {
-	err = global.App.DB.Where("username = ?", params.UserName).First(&user).Error
+	err = global.App.DB.Where("user_name = ?", params.UserName).First(&user).Error
 	if err != nil || !utils.BcryptMakeCheck([]byte(params.Password), user.Password) {
 		err = errors.New("用户名不存在或密码错误")
 	}

@@ -29,6 +29,7 @@ func setupRouter() *gin.Engine {
 		publishRouter := douyin.Group("/publish").Use(middleware.JWTAuth(middleware.AppGuardName))
 		{
 			publishRouter.POST("/action", video.PublishVideoHandler)
+			publishRouter.GET("/list", video.QueryVideoById)
 		}
 
 		//这个是一个负责登录注册的模块
